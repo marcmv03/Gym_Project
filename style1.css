@@ -1,0 +1,60 @@
+body {
+    background-color: #000;
+}
+
+h1 {
+    color :rgba(204, 255, 0, 0.765) ;
+    font-size: 34px;
+}
+h2 {
+    color : 0#ffffff;
+    font-size : 30px ;
+}
+#login form label   {
+    color :#ffffff;
+    font-size : 25px ;
+    display: block;
+    margin-left : 20px ;
+}
+#login form button {
+    margin-bottom: 5 px ;
+    position:relative;
+    bottom: -5px ;
+    margin-left: 20px;
+}
+#login form input {
+    margin-left : 20px ;
+}
+#imatge1{
+    height: 600px;
+    width: 1000px;
+    display:block;
+    margin-right: auto;
+    margin-left: auto;
+    position : relative;
+}
+#link_register{
+    color :#ffffff;
+    margin-left: 5px;
+}
+
+
+/*register.html*/
+
+#register form input {
+    margin-left : 20px ;
+}
+#register form label {
+    color :#ffffff;
+    font-size : 25px ;
+    display: block;
+    margin-left : 20px ;
+}
+#register form button {
+    background-color :rgb(79, 26, 102) ;
+    margin-top: 10px;
+    margin-left: 30px;
+    border:2px;
+    border-radius: 5px;
+
+}
