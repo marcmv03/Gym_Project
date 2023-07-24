@@ -1,0 +1,52 @@
+h1 {
+    background-color: #222;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Estilos para el subtítulo */
+h2 {
+    text-align: center;
+    margin: 20px 0;
+    color: #555;
+}
+
+/* Estilos para los botones */
+button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+/* Estilos para el contenedor de botones */
+#desplegables {
+    text-align: center;
+    margin-right: 50px;
+    padding-right: 50px;
+}
+#exercicis {
+    display:none;
+    text-align: center;
+    padding-top: 20px;
+}
+
+#AGC {
+    display: none;
+}
+#Guardar {
+    background-color: #008000;
+}
+#Cancel {
+    background-color: #800000;
+}

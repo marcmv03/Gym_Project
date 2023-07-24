@@ -15,18 +15,19 @@
             Login
         </h2>
     <div id = "login">
-        <form id ="formulari">
-        <label for ="name"> nom</label>
-        <input type="text" id="nom",name = "name">
+        <form   action = "/login"  method="post">
+        <label for ="nom"> nom</label>
+        <input type="text" id="nom" name = "nom" required>
         <br>
         <label for = "passw"> Contrasenya </label>
-        <input type ="password",id = "passw",name = "passw">
+        <input type ="password" id = "passw" name = "passw" requiered>
         <br> 
-        <button>Login</button>
-        <a  href="/register",id ="link_register">Register</a>
+        <button type ="submit">Login</button>
+        <a  href="/register",id ="link_register" >Register</a>
         </form>
     </div>
     <img src ="imatge_portada.jpg", id ="imatge1">
+    <script> src = "/register.js"</script>
     
 </body>
 </html>

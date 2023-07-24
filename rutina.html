@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href = '/style2.css' rel = 'stylesheet'>
+    <title>Rutina</title>
+</head>
+<body>
+    <h1>Benvingut maquina!</h1>
+    <h2>Aqui podras seleccionar,administrar i crear rutines</h2>
+    <div id = "desplegables">
+        <button id = "crearRutina"> Crear Rutina </button>
+        <button id = "veure_rutina" > Veure rutines </button>
+        <div id = "exercicis">
+        <form> Afegir exercici</form>
+        <br> 
+        <label  for = "nom_ex"> Exercici </label>
+        <input  id = "nom_ex" name ="nom_ex" required  >
+        <label id = "label_reps"for = "repeticions" > Repeticions</label>
+        <input  id = "repeticions" repeticions type = "number"  required>
+        <div id = "AGC"> 
+            <button id ="Afegir">Afegir</button>
+            <button id ="Guardar">Guardar</button>
+            <button id ="Cancel">Cancelar</button>
+            <br> Tipus: Pes 
+            <input name = "tipus" id = "Pes" type="radio"  checked="checked"> 
+            Cardio 
+            <input name = "tipus" id ="Cardio" type="radio"> 
+        </div>
+        <script src = "/rutina.js"></script>
+    </div>
+    </div>
+</body>
+</html>

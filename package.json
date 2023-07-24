@@ -1,0 +1,26 @@
+{
+  "name": "projecte_gym",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marc",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "bootstrap": "^5.2.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.1.0",
+    "nodemon": "^3.0.1",
+    "path": "^0.12.7",
+    "pg": "^8.9.0",
+    "tedious": "^15.1.2"
+  }
+}

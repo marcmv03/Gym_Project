@@ -7,7 +7,7 @@ h1 {
     font-size: 34px;
 }
 h2 {
-    color : 0#ffffff;
+    color :rgba(162, 198, 17, 0.765) ;
     font-size : 30px ;
 }
 #login form label   {
