@@ -27,6 +27,10 @@ function crear_rutina(){
         rutina = [] ;
     }
 }
+function inicialitzar() {
+    document.querySelector("#nom_ex").value  ="" ;
+    document.querySelector("#repeticions").value  = "" ;
+}
 function veure_rutines(user) {}
 function mostrar_creador() {
     document.getElementById("exercicis").style.display = "block";
@@ -48,7 +52,7 @@ function escollir_tipus() {
     if(Pes.checked) document.getElementById("label_reps").innerHTML = "Repeticons" ;
     else if(Card.checked) document.getElementById("label_reps").innerHTML = "Temps" ;
 }
-
+inicialitzar() ;
 let creator = document.getElementById("crearRutina") ;
 console.log(creator);
 creator.addEventListener("click",mostrar_creador) ;

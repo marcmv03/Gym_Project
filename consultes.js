@@ -1,5 +1,9 @@
 const mysql = require('mysql2') ;
 const config = require("./config.js") ;
+const { resolve } = require('path');
+const { rejects } = require('assert');
+const { error } = require('console');
+const bycript = require('bcrypt');
 
 let user = 'pepito';
 let state = false  ;
@@ -27,7 +31,9 @@ exports.exercicis = () =>{
   )};
 let b = false;
 exports.alta= async  (user,gmail,passw)=>{
-      conection.execute(`INSERT INTO Usuari(nom,Email,password) VALUES(?,?,?)`, [user, gmail, passw], (err, result) => {
+     let passw_hashed =   await bycript.hash(passw,8);
+      console.log(passw_hashed) ;
+      conection.execute(`INSERT INTO Usuari(nom,Email,password) VALUES(?,?,?)`, [user, gmail, passw_hashed], (err, result) => {
         if (err) {
             console.log(err.message);
             b = false;
@@ -40,19 +46,25 @@ exports.alta= async  (user,gmail,passw)=>{
     return b ;
 };
 let valid = false ;
-exports.validate =   async (user,passw) => {
-    let acabat = false ;
-    let query = 'SELECT * FROM Usuari u WHERE u.nom = ? AND u.password = ? '
-     valid = (user != undefined && passw != undefined) ;
-       conection.execute(query,[user,passw], (err, results,fields) => {
-               if (results.length == 0) valid = false;
-               console.log(results);
-               console.log(valid);
-
-           });
-     console.log(valid) ;
-     return valid ;
-} ;
+exports.validate  =  (user,passw) => {
+    //console.log(passw) ;
+    return new Promise((resolve,reject) => {
+        let query = 'SELECT * FROM Usuari u WHERE u.nom = ? ';
+        conection.execute(query,[user], async (error, results,fields) => {
+            if(error) reject(error) ;
+            else {
+            if(results.length != 0) {
+               let  eq =  await bycript.compare(passw,results[0].password) ;
+                console.log("mateixa contrasenya:",eq) ;
+                console.log(results.length) ;
+                console.log("consulta feta") ;
+                resolve( eq ) ;
+            }
+            else resolve(false) ;
+        }
+        })
+    } ) ;
+    } ;
 
 function guardar_exercici(exercicis,nom_rutina,nom_user) {
     let query_exs = "insert into Exercici values(?,?,?)" ;

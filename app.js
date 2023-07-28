@@ -1,7 +1,6 @@
  const  express =require('express') ;
  const bodyParser = require('body-parser');
  const path = require('path');
- const bycript = require('bcrypt');
  const cors = require('cors');
  const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
@@ -27,18 +26,13 @@ app.use(cors());
  const consultes = require("./consultes.js")
  consultes.conect;
 
- let user = "aaa" ;
- let session ;
+ let user = "";
 
- const missatges = {
-  default_register: {
-    estat: false,
-    msg : "usuari o correu ja registrats ,tornant a pag principal"
-  },
-  default_login : {
-    estat: false ,
-    msg:"usuari o contrasenya incorrecta"
-  }
+ /**missatges a enviar pels difernets tipus d' error */
+ const missatges_error = { 
+  error_login : "usuari o contrasenya incorrecta",
+  error_register:"usuari ja registrat",
+  error_rutina:"ja hi ha una rutina amb el mateix nom"
  };
 
  function escapar_input(input) {
@@ -55,25 +49,29 @@ app.get('/',function(req,answer){
 app.get('/register',(req,res)=>{
   res.sendFile(path.join(__dirname+'/register.html')) ;
 });
-app.get(`/user/${user}/Rutina`,(req,res)=>{
-  res.sendFile(path.join(__dirname+'/rutina.html')) ;
+app.get(`/user/:user/Rutina`,(req,res)=>{
+  console.log(req.session);
+  if( user != "")
+    res.sendFile(path.join(__dirname+'/rutina.html')) ;
+  else res.sendStatus(404) ;
 })
 app.post('/register', async (req,res)=>{
   const form = escapar_input(req.body) ;
-  const passw =  await bycript.hash(form.passw,8);
   console.log(form) ;
-  let reg = consultes.alta(form.nom,form.email,passw) ;
+  let reg = consultes.alta(form.nom,form.email,form.passw) ;
   reg.then((result) =>{
     if(result) {
-      missatges.default_login.estat = true ;
+    //consultes.usuaris;
+    req.session.user = form.nom;
+    console.log(req.session);
+    user = form.nom ;
     res.redirect(`/user/${user}/Rutina`);
-    consultes.usuaris;
-    session = req.session;
-    session.nom_user = form.nom ;
-    console.log(session);
     }
-    else res.redirect("/") ;
-  })
+    else {
+      res.setHeader("msg",missatges_error.error_register) ;
+      res.sendStatus(404) ;
+  }
+})
   }
 );
 
@@ -81,18 +79,24 @@ app.post('/login', async (req,res) =>{
   console.log(req.body);
   const form = escapar_input(req.body) ;
   console.log(form) ;
-  const passw =  await bycript.hash(form.passw,8);
-  let val =  consultes.validate(form.nom,passw);
-  val.then((result) => {
-    if(result) {
+  let val =  consultes.validate(form.nom,form.passw)
+    .then((result) => {
+      if(result)  {
+      console.log(result) ;
+      req.session.user = form.nom;
+      console.log(req.session);
+      user = form.nom ;
       res.redirect(`/user/${user}/Rutina`) ;
-      session = req.session;
-      session.nom_user = form.nom ;
-      console.log(session);
+      }
+    else  {
+        res.setHeader('msg',missatges_error.error_login);
+        res.sendStatus(404) ;
     }
-    else  res.redirect("/") ;
-  } ) ;
-});
+    console.log(result) ;
+  } ) 
+  .catch((err) =>console.log(err)) ;
+}
+)
 
 app.post(`/user/${user}/Rutina/crear`,(req,res) => {
   const rutina = {
