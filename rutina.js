@@ -27,6 +27,9 @@ function crear_rutina(){
         rutina = [] ;
     }
 }
+function logout() {
+    location.href = "/" ;
+}
 function inicialitzar() {
     document.querySelector("#nom_ex").value  ="" ;
     document.querySelector("#repeticions").value  = "" ;
@@ -54,9 +57,11 @@ function escollir_tipus() {
 }
 inicialitzar() ;
 let creator = document.getElementById("crearRutina") ;
+let logout_button = document.getElementById("logout-button")
 console.log(creator);
 creator.addEventListener("click",mostrar_creador) ;
 add.addEventListener("click",afegir_exercicis) ;
 save.addEventListener("click",crear_rutina) ;
 Pes.addEventListener("click",escollir_tipus);
 Card.addEventListener("click",escollir_tipus);
+logout_button.addEventListener("click",logout) ;

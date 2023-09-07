@@ -43,15 +43,17 @@ app.use(cors());
     return result  ;
     }
 
-app.get('/',function(req,answer){
-  answer.sendFile(path.join(__dirname+'/index.html')) ;
+app.get('/',function(req,res){
+  req.session.destroy() ;
+  res.sendFile(path.join(__dirname+'/index.html')) ;
   });
 app.get('/register',(req,res)=>{
+  req.session.destroy() ;
   res.sendFile(path.join(__dirname+'/register.html')) ;
 });
 app.get(`/user/:user/Rutina`,(req,res)=>{
   console.log(req.session);
-  if( user != "")
+  if(req.session.user)
     res.sendFile(path.join(__dirname+'/rutina.html')) ;
   else res.sendStatus(404) ;
 })
@@ -98,7 +100,8 @@ app.post('/login', async (req,res) =>{
 }
 )
 
-app.post(`/user/${user}/Rutina/crear`,(req,res) => {
+app.post(`/user/:user/Rutina/crear`,(req,res) => {
+if(req.session.user) {
   const rutina = {
     nom : req.body.nom ,
     nom_user : session.nom_user ,
@@ -107,7 +110,29 @@ app.post(`/user/${user}/Rutina/crear`,(req,res) => {
 
   };
   consultes.crear_rutina(rutina) ;
+}
+else res.sendStatus(404) ;
 }) ;
+
+app.get(`/user/:user/Rutina/:nom`,((req,res) => {
+  const nom_rutina = req.params.nom ;
+  const nom_user = req.params.user ;
+  consultes.mostrar_rutina(nom_rutina,nom_user)
+  .then((result) => res.json(result)) 
+  .catch(() => res.sendStatus(403)) ;
+
+}));  
+
+app.delete(`/user/:user/Rutina/:nom`,((req,res) => {
+  const nom_rutina = req.params.nom ;
+  const nom_user = req.params.user ;
+  consultes.eliminar_rutina(nom_rutina,nom_user) 
+  .then((msg) => {
+    res.sendStatus(200); console.log(msg)})
+  .catch((msg)=> { res.sendStatus(404);console.log(msg)} )
+})) ;
+
+app.put('/user/:user/Rutina/',(req,res) => {}) ;
 
 //consultes.augmentar_reps('Marc','press_banca',3);
 //consultes.exercicis() ;

@@ -75,7 +75,7 @@ function guardar_exercici(exercicis,nom_rutina,nom_user) {
         })
     }
 }
-
+//CRUD Rutina
  exports.crear_rutina = function(rutina) {
     let query_rutina = "insert into Rutina(nom,nom_user,duracio) values(?,?,?)"
     conection.query(query_rutina,[rutina.nom,rutina.nom_user,rutina.duracio],(err,res) => {
@@ -91,6 +91,31 @@ function guardar_exercici(exercicis,nom_rutina,nom_user) {
         }
     )
  } ;
+exports.mostrar_rutina = async (nom,nom_user)  => {
+    return new Promise((resolve,reject) =>{
+        let query_rutina = "select * from  Rutina r  where r.nom = ? and r.nom_user = ?" ;
+        conection.query(query_rutina,[nom,nom_user],(err,res) => {
+            if(res.length != 0) resolve(JSON.stringify(res)) ;
+            else reject() ;
+        })  ;
+
+    })
+}
+exports.eliminar_rutina = async(nom,nom_user) => {
+    return new Promise((resolve,reject) =>{
+        let query_rutina = "delete  from  Rutina r  where r.nom = ? and r.nom_user = ?" ;
+        conection.query(query_rutina,[nom,nom_user],(err,res) => {
+            if(err) reject(err) ;
+            else {
+                console.log(res);
+                if(res.affectedRows == 0)reject(`no existeix la rutina de nom ${nom} de l'usuari ${nom_user}`) ;
+                else resolve(`rutina de nom ${nom} i d'usuari ${nom_user} eliminada correctament  `);
+            }
+
+        })  ;
+
+    })
+} ;
 
 
 exports.tancar = () =>{conection.end()} ;

@@ -43,7 +43,7 @@ create table Exercici(
 nom_ex char(30) ,
 nom_rutina  char(20) ,
 nom_user char(20) ,
-foreign key(nom_rutina,nom_ex) references Rutina(nom),
+foreign key(nom_rutina,nom_user) references Rutina(nom,nom_user) on delete cascade ,
 primary key(nom_ex,nom_rutina,nom_user) ) ;
 
 create table Cardio(
@@ -52,7 +52,7 @@ duracio integer,
 nom_rutina char(20),
 nom_user char(20) ,
 primary key(nom_ex,nom_rutina,nom_user) ,
-foreign key(nom_ex) references Exercici(nom_ex)
+foreign key(nom_ex,nom_rutina,nom_user) references Exercici(nom_ex,nom_rutina,nom_user) on delete cascade
 ) ;
 
 create table Pes(
@@ -62,7 +62,7 @@ pes_max integer default 0,
 nom_rutina char(20),
 nom_user char(20) ,
 primary key(nom_ex,nom_rutina,nom_user),
-foreign key(nom_ex) references Exercici(nom_ex)
+foreign key(nom_ex,nom_rutina,nom_user) references Exercici(nom_ex,nom_rutina,nom_user) on delete cascade 
 ) ;
 
 

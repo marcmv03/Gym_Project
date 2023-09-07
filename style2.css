@@ -50,3 +50,18 @@ button:hover {
 #Cancel {
     background-color: #800000;
 }
+#logout-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  
+  /* Estilo para el botón de logout */
+  #logout-button {
+    padding: 8px 16px;
+    background-color :rgb(79, 26, 102) ;
+    color: #fff;
+    border: none
+    border-radius: 4px;
+    cursor: pointer;
+  }
