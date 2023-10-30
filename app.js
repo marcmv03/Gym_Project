@@ -67,15 +67,14 @@ app.post('/register', async (req,res)=>{
     req.session.user = form.nom;
     console.log(req.session);
     user = form.nom ;
-    res.redirect(`/user/${user}/Rutina`);
+    res.status(302);
     }
     else {
-      res.setHeader("msg",missatges_error.error_register) ;
-      res.sendStatus(404) ;
+      res.status(403).json(`info : ${missatges_error.error_register}`) ;
   }
 })
-  }
-);
+reg.catch(() =>res.status(403).json(`info : ${missatges_error.error_register}`)) 
+});
 
 app.post('/login', async (req,res) =>{
   console.log(req.body);
@@ -86,25 +85,32 @@ app.post('/login', async (req,res) =>{
       if(result)  {
       console.log(result) ;
       req.session.user = form.nom;
+      res.cookie(`name`,`${form.nom}`),{
+        maxAge: 5000,
+        // expires works the same as the maxAge
+        expires: new Date('01 12 2021'),
+        secure: true,
+        httpOnly: true,
+        sameSite: 'lax'
+      } ;
       console.log(req.session);
       user = form.nom ;
       res.redirect(`/user/${user}/Rutina`) ;
-      }
+    }
     else  {
-        res.setHeader('msg',missatges_error.error_login);
-        res.sendStatus(404) ;
+        res.status(403).json(` info: ${missatges_error.error_login}`) ;
     }
     console.log(result) ;
   } ) 
   .catch((err) =>console.log(err)) ;
 }
-)
+) ;
 
 app.post(`/user/:user/Rutina/crear`,(req,res) => {
 if(req.session.user) {
   const rutina = {
     nom : req.body.nom ,
-    nom_user : session.nom_user ,
+    nom_user : req.session.user ,
     exercicis : req.body.exercicis,
     duracio : 50 
 
@@ -114,7 +120,7 @@ if(req.session.user) {
 else res.sendStatus(404) ;
 }) ;
 
-app.get(`/user/:user/Rutina/:nom`,((req,res) => {
+app.get(`/user/:user/Rutina/show/:nom`,((req,res) => {
   const nom_rutina = req.params.nom ;
   const nom_user = req.params.user ;
   consultes.mostrar_rutina(nom_rutina,nom_user)
@@ -122,6 +128,15 @@ app.get(`/user/:user/Rutina/:nom`,((req,res) => {
   .catch(() => res.sendStatus(403)) ;
 
 }));  
+
+app.get('/user/:user/Rutina/show',(req,res) => {
+  const nom_user = req.params.user ;
+  consultes.mostrar_rutina(nom_user)
+  .then((result) =>{
+    res.json(result) ;
+  }) 
+  .catch((err) => console.log(err)) ;
+}) ;
 
 app.delete(`/user/:user/Rutina/:nom`,((req,res) => {
   const nom_rutina = req.params.nom ;

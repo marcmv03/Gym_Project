@@ -10,7 +10,7 @@
 <body>
     <h1> Registrar-se</h1>
     <div id = "register",>
-            <form method="post" >
+            <form >
                 <label for ="nom"> nom</label>
                 <input name="nom" type="text" id="nom" required>
                 <br>
@@ -18,11 +18,12 @@
                 <input name="email" type ="email" id="email" required>
                 <br>
                 <label for = "passw" > Contrasenya </label>
-                <input name="passw" type ="password",id = "passw" required>
+                <input name="passw" type ="password" id = "passw" required>
                 <br> 
-                <button id = "button_reg" type ="submit">Register</button>
-                <script> src = "/register.js"</script>
         </form>
+        <button id = "button_reg" type ="button">Register</button>
+        <script src = "/utils_front.js"></script>
+        <script src = "./register.js"> </script>
     </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-"use strict" ;
+import { getCookie } from "./utils_front"; ;
 /**form's inputs values in a object; */
 let input_reg = {
     nom : document.querySelector("#nom") ,
@@ -9,22 +9,37 @@ let input_reg = {
  * 
 */
 function inicialitzar() { 
-    for(input in input_reg) input.value = "" ;
+    for(let input in input_reg) input_reg[input].value = "" ;
 }
 
-function resposta_register() {
+ async function resposta_register() {
+    let errorMsg,errorMsgJson ; 
+    let result ;
     console.log("hola") ;
-    let  res = fetch(`/register`,{
+    let  res =  await fetch(`/register`,{
         method: "POST" ,
-        body: JSON.stringify(input_reg),
+        body: JSON.stringify({
+            nom : input_reg.nom.value ,
+            email : input_reg.email.value,
+            passw : input_reg.passw.value }) 
+        ,
         headers:{
             'Content-Type': 'application/json; charset=utf-8'
           }
-    }) ;
-    res.then((response) => console.log(response)) ;
-    res.catch(error => console.error('Error:', error)) ;
-    console.log(res) ;
+    }) ; 
+    if(res.status  == 403) {
+    errorMsgJson = await res.json() ;
+    console.log(errorMsgJson);
+    if(errorMsgJson) {
+    alert(errorMsgJson) ;
+    }
+    else if(res.status == 302) {
+        const user = getCookie("name") ;
+        location.href = `/user/${user}/Rutina;`
+    }
+ }
 }
+console.log(input_reg);
 window.onload = inicialitzar();
 let register = document.querySelector("#button_reg") ;
-register.addEventListener("click",resposta_register()) ;
+register.addEventListener("click",resposta_register) ;

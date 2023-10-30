@@ -50,7 +50,7 @@ h2 {
     display: block;
     margin-left : 20px ;
 }
-#register form button {
+#button_reg {
     background-color :rgb(79, 26, 102) ;
     margin-top: 10px;
     margin-left: 30px;

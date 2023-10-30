@@ -1,10 +1,15 @@
 "use strict" ;
+import { getCookie } from "./utils_front";
 let rutina = [] ;
-const user = "aaa" ;
+let user = getCookie("name") ;
+console.log(user) ;
 let add = document.querySelector("#Afegir") ;
 let save = document.querySelector("#Guardar") ;
 let Pes = document.querySelector("#Pes") ;
-let Card = document.querySelector("#Cardio")
+let Card = document.querySelector("#Cardio");
+
+/** Retorna el valor de la clau especificada de la cookie */
+
 function crear_rutina(){
     if(rutina.length == 0) window.alert("No s'ha afegit cap exercici") ;
     else {
@@ -34,7 +39,6 @@ function inicialitzar() {
     document.querySelector("#nom_ex").value  ="" ;
     document.querySelector("#repeticions").value  = "" ;
 }
-function veure_rutines(user) {}
 function mostrar_creador() {
     document.getElementById("exercicis").style.display = "block";
     document.getElementById("AGC").style.display = "inline";
@@ -55,13 +59,25 @@ function escollir_tipus() {
     if(Pes.checked) document.getElementById("label_reps").innerHTML = "Repeticons" ;
     else if(Card.checked) document.getElementById("label_reps").innerHTML = "Temps" ;
 }
+ async function getRutines() {
+    let rutinesServer ; 
+     rutinesServer = await fetch(`/user/${user}/Rutina/show`,{method: 'GET'}) ;
+    let rutinesServerJSON = await rutinesServer.json() ;
+    console.log(rutinesServerJSON) ;
+    rutinesServer = JSON.parse(rutinesServerJSON) ;
+    document.getElementById("crearRutina").innerHTML = `${rutinesServer.nom}`;
+ }
+    
+        
 inicialitzar() ;
 let creator = document.getElementById("crearRutina") ;
-let logout_button = document.getElementById("logout-button")
-console.log(creator);
+let logout_button = document.getElementById("logout-button");
+let mostrar_rutines = document.getElementById("veure_rutina") ;
+console.log(mostrar_rutines);
 creator.addEventListener("click",mostrar_creador) ;
 add.addEventListener("click",afegir_exercicis) ;
 save.addEventListener("click",crear_rutina) ;
 Pes.addEventListener("click",escollir_tipus);
 Card.addEventListener("click",escollir_tipus);
 logout_button.addEventListener("click",logout) ;
+mostrar_rutines.addEventListener("click",getRutines);

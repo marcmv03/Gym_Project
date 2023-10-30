@@ -29,22 +29,25 @@ exports.exercicis = () =>{
     console.log(result) ;
   }
   )};
-let b = false;
 exports.alta= async  (user,gmail,passw)=>{
      let passw_hashed =   await bycript.hash(passw,8);
       console.log(passw_hashed) ;
-      conection.execute(`INSERT INTO Usuari(nom,Email,password) VALUES(?,?,?)`, [user, gmail, passw_hashed], (err, result) => {
-        if (err) {
-            console.log(err.message);
-            b = false;
-        }
-        else {
-            console.log("alta exitosa");
-            b = true;
-        }
+        return new Promise((resolve,reject) => {
+        conection.execute(`INSERT INTO Usuari(nom,Email,password) VALUES(?,?,?)`, [user, gmail, passw_hashed], (err, result) => {
+            if(err){
+            console.log(err);
+            if (err.sqlState == '23000') {
+                resolve(false) ;
+            }
+            else  reject() ;
+            }
+            else {
+                console.log("alta exitosa");
+                resolve(true) ;
+            }
     }) ;
-    return b ;
-};
+});
+}
 let valid = false ;
 exports.validate  =  (user,passw) => {
     //console.log(passw) ;
@@ -101,6 +104,19 @@ exports.mostrar_rutina = async (nom,nom_user)  => {
 
     })
 }
+exports.mostrar_rutina = async(nom_user)  => {
+    return new Promise((resolve,reject) =>{
+        let query_rutina = `select r.nom,r.duracio ,count(e.nom_ex) as num_exs from Rutina r  left outer join Exercici e 
+                            on e.nom_rutina  = r.nom  where r.nom_user  = ? 
+                             group by r.nom
+                            order by r.nom `;
+       conection.query(query_rutina,[nom_user],(err,res) => {
+                                if(!err) resolve(JSON.stringify(res)) ;
+                                else reject(err) ;
+                            })  ;
+    })
+
+};
 exports.eliminar_rutina = async(nom,nom_user) => {
     return new Promise((resolve,reject) =>{
         let query_rutina = "delete  from  Rutina r  where r.nom = ? and r.nom_user = ?" ;
